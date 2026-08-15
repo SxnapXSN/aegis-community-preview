@@ -52,6 +52,6 @@ class CliAndBoundaryTests(unittest.TestCase):
             violations = find_violations(root)
 
         self.assertIn(
-            "path is outside the public allow-list: aegis_core\\internal.py",
+            f"path is outside the public allow-list: {Path('aegis_core') / 'internal.py'}",
             violations,
         )
