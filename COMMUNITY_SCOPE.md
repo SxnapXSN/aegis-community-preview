@@ -8,6 +8,7 @@ conservative execution brief without connecting to external services.
 ## Public Allow-List
 
 - `aegis_community/`
+- `docs/`
 - `examples/`
 - `tests/`
 - `scripts/verify_preview_boundary.py`

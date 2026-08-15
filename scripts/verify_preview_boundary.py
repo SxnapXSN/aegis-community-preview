@@ -12,6 +12,7 @@ IGNORED_DIRECTORIES = {".git", ".venv", "__pycache__", ".pytest_cache"}
 ALLOWED_TOP_LEVEL_DIRECTORIES = {
     ".github",
     "aegis_community",
+    "docs",
     "examples",
     "scripts",
     "tests",

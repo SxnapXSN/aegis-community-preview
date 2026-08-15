@@ -33,6 +33,14 @@ python scripts/verify_preview_boundary.py .
 
 The CLI writes a JSON brief to standard output and makes no network requests.
 
+## Download And Usage
+
+- Download the [v0.1.1 source ZIP](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v0.1.1.zip),
+  or clone this repository.
+- Follow the step-by-step [Usage Guide](docs/USAGE_GUIDE.md).
+- See [Release Notes](docs/RELEASE_NOTES.md) for the preview scope and known
+  limitations.
+
 ## Preview Status
 
 This directory is a local release candidate for the separate public preview
