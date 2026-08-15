@@ -1,0 +1,10 @@
+{
+  "task_id": "preview-docs-001",
+  "title": "Draft local documentation outline",
+  "objective": "Prepare a short outline for a local technical preview guide.",
+  "risk_level": "low",
+  "allowed_actions": [
+    "draft_outline",
+    "request_human_review"
+  ]
+}

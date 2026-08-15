@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.py[cod]
+.coverage
+coverage.xml
+dist/
+build/
+*.egg-info/
+.pytest_cache/
