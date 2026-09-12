@@ -22,6 +22,24 @@ Everything in this repository is inspectable, local-first, and explicit about it
 
 </div>
 
+## 📚 Table of contents
+
+- [About](#-about)
+- [How the handoff works](#-how-the-handoff-works)
+- [What you get](#-what-you-get)
+- [Download and install](#-download-and-install)
+- [Connect an AI client](#-connect-an-ai-client)
+- [Convert documents for AI](#-convert-documents-for-ai)
+- [Run the MD adapter workflow](#-run-the-md-adapter-workflow)
+- [Use the CLI directly](#-use-the-cli-directly)
+- [Why it is different from manual file sharing](#-why-it-is-different-from-manual-file-sharing)
+- [Public boundary](#-public-boundary)
+- [Verification](#-verification)
+- [Project map](#-project-map)
+- [Status and roadmap](#-status-and-roadmap)
+- [Contributing and support](#-contributing-and-support)
+- [License](#-license)
+
 ## 🧭 About
 
 Aegis Community is the free public tool layer that sits between a user and an
