@@ -12,7 +12,8 @@ from a version string.
 | Community | `C 0.5.0` | Bootstrap, Bridge, and auto-connect beta | Planned |
 | Community | `C 0.8.0` | Integration candidate with MD contract | Previous candidate |
 | Community | `C 1.0.0` | First fully verified free release | Previous candidate |
-| Community | `C 1.1.0` | Universal documents, AI context packs, and bounded folder ingestion | Current public preview |
+| Community | `C 1.1.0` | Universal documents, AI context packs, and bounded folder ingestion | Previous public preview |
+| Community | `C 1.1.1` | Public page polish, release downloads, and the same verified workflow | Current public preview |
 | Community | `C 1.1.x` | Client compatibility and reliability | Planned |
 | Community | `C 1.2.x` | Diagnostics, repair, evidence, and MD quality | Planned |
 | Community | `C 1.5.0` | More public safe workflows | Planned |
@@ -26,5 +27,5 @@ from a version string.
 | Stable Private | `S-R2.x` | Next private architecture | Private |
 | MD Private | `MD-X` | Private models, optimizers, and pipelines | Private |
 
-`C 1.1.0` is the current public preview line. Its public availability does
+`C 1.1.1` is the current public preview line. Its public availability does
 not imply access to the private Stable engine or private capabilities.

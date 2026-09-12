@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aegis-community-preview"
-version = "1.1.0"
-description = "Privacy-safe local MCP bridge, document-to-Markdown pipeline, and AI context pack for Aegis Community"
+version = "1.1.1"
+description = "Local-first MCP bridge for AI document context, Markdown conversion, and safe Aegis Community workflows"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "SxnapXSN" }]

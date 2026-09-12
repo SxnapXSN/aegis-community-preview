@@ -1,5 +1,14 @@
 # Release Notes
 
+## 1.1.1 Public Page and Download Preview
+
+- Refined the public README with an About section, visual flow, badges, emoji
+  labels, expandable guidance, and clear download actions.
+- Added a download guide and a tag-triggered release workflow for wheel,
+  source distribution, and SHA-256 checksum assets.
+- Updated repository metadata, version references, and release language so
+  the public page describes the current Community line consistently.
+
 ## 1.1.0 Universal Document Public Preview
 
 - Added a dependency-light document-to-Markdown pipeline for text, source,

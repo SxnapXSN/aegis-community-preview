@@ -1,6 +1,6 @@
 # Release Evidence
 
-This record describes checks run locally for Community 1.1.0. It does
+This record describes checks run locally for Community 1.1.1. It does
 not disclose machine paths, addresses, credentials, or private Stable data.
 
 ## Contract And Package
@@ -45,7 +45,7 @@ not disclose machine paths, addresses, credentials, or private Stable data.
 
 ## Release Decision
 
-These checks support the Community 1.1.0 public preview. The tagged release
+These checks support the Community 1.1.1 public preview. The tagged release
 workflow repeats the package build, unit suite, and public-boundary checker
 before publishing downloadable assets. This release still does not claim
 full Stable or OCR readiness. Donation information remains intentionally

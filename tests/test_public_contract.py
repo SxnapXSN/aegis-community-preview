@@ -22,7 +22,7 @@ class PublicContractTests(unittest.TestCase):
         encoded = json.dumps(manifest, sort_keys=True)
 
         self.assertEqual("aegis.manifest/v1", manifest["schema"])
-        self.assertEqual("1.1.0", manifest["release"]["version"])
+        self.assertEqual("1.1.1", manifest["release"]["version"])
         self.assertEqual(
             [
                 "aegis_manifest",

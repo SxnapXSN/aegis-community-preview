@@ -8,7 +8,7 @@ from .document_md import document_status
 from .md import md_status
 
 
-COMMUNITY_VERSION = "1.1.0"
+COMMUNITY_VERSION = "1.1.1"
 CONTRACT_VERSION = "1.0"
 PRODUCT_NAME = "Aegis Community"
 

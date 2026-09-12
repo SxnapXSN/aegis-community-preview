@@ -15,14 +15,14 @@ Each public release is intended to contain:
 - SHA256SUMS.txt for integrity verification;
 - the GitHub-generated source archive for the tagged commit.
 
-For Community 1.1.0, the direct wheel link is:
+For Community 1.1.1, the direct wheel link is:
 
-[Download aegis_community_preview-1.1.0-py3-none-any.whl](https://github.com/SxnapXSN/aegis-community-preview/releases/download/v1.1.0/aegis_community_preview-1.1.0-py3-none-any.whl)
+[Download aegis_community_preview-1.1.1-py3-none-any.whl](https://github.com/SxnapXSN/aegis-community-preview/releases/download/v1.1.1/aegis_community_preview-1.1.1-py3-none-any.whl)
 
 Install it with:
 
 ~~~powershell
-python -m pip install --no-deps .\aegis_community_preview-1.1.0-py3-none-any.whl
+python -m pip install --no-deps .\aegis_community_preview-1.1.1-py3-none-any.whl
 aegis-community preflight
 ~~~
 
@@ -39,7 +39,7 @@ modify the public source.
 
 ## Source ZIP
 
-[Download the v1.1.0 source ZIP](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v1.1.0.zip)
+[Download the v1.1.1 source ZIP](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v1.1.1.zip)
 
 Extract it, open PowerShell in the extracted folder, and run:
 
@@ -53,7 +53,7 @@ When verifying a release asset, download SHA256SUMS.txt from the same
 release and compare it with a local hash:
 
 ~~~powershell
-Get-FileHash .\aegis_community_preview-1.1.0-py3-none-any.whl -Algorithm SHA256
+Get-FileHash .\aegis_community_preview-1.1.1-py3-none-any.whl -Algorithm SHA256
 ~~~
 
 The release workflow builds artifacts from the tagged source only after the
@@ -68,4 +68,3 @@ the public-boundary checker before publishing the assets.
 - Legacy binary .doc, .xls, and .ppt files are not parsed directly.
 - The wheel does not contain private Stable code, model weights, or an MD
   backend.
-
