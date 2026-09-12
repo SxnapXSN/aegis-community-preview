@@ -60,15 +60,18 @@ powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
 This is the best option for contributors and users who want to inspect or
 modify the public source.
 
-## Source ZIP
+## Current source ZIP
 
-[Download the v1.1.1 source ZIP](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v1.1.1.zip)
+[Download the current main source ZIP](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/heads/main.zip)
 
 Extract it, open PowerShell in the extracted folder, and run:
 
 ~~~powershell
 powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
 ~~~
+
+The current main archive also includes the Windows one-click installer. Use
+the tagged release archive when you need an immutable v1.1.1 source snapshot.
 
 ## Integrity
 

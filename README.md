@@ -14,7 +14,7 @@ Everything in this repository is inspectable, local-first, and explicit about it
 
 [![Download latest](https://img.shields.io/badge/Download-latest-2ea44f?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/latest)
 [![Download wheel](https://img.shields.io/badge/Download-Wheel-0969da?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/download/v1.1.1/aegis_community_preview-1.1.1-py3-none-any.whl)
-[![Source ZIP](https://img.shields.io/badge/Source-ZIP-6f42c1?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v1.1.1.zip)
+[![Source ZIP](https://img.shields.io/badge/Source-ZIP-6f42c1?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/heads/main.zip)
 [![Windows installer](https://img.shields.io/badge/Windows-One--click-2088ff?style=for-the-badge)](docs/DOWNLOADS.md#windows-one-click-installer)
 [![Documentation](https://img.shields.io/badge/Read-Docs-8250df?style=for-the-badge)](docs/USAGE_GUIDE.md)
 [![Report issue](https://img.shields.io/badge/Report-Issue-d1242f?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/issues/new/choose)
