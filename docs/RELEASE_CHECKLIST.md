@@ -26,6 +26,8 @@
 - [x] No donation or payment account is included before its later approval.
 - [x] README contains working source, release, documentation, issue, and wheel
       links.
+- [x] Windows installer downloads the latest wheel, verifies its checksum,
+      installs it, and runs preflight.
 
 ## Verification
 

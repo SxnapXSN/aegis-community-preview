@@ -26,6 +26,29 @@ python -m pip install --no-deps .\aegis_community_preview-1.1.1-py3-none-any.whl
 aegis-community preflight
 ~~~
 
+## Windows one-click installer
+
+The installer is the fastest path for a normal Windows setup. It discovers
+the latest public release, downloads the wheel and checksum, verifies the
+wheel, installs it, and runs preflight:
+
+~~~powershell
+$installer = Join-Path $env:TEMP 'install-aegis-community.ps1'
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/SxnapXSN/aegis-community-preview/main/scripts/install-community.ps1' -OutFile $installer
+powershell -ExecutionPolicy Bypass -File $installer
+~~~
+
+To inspect it before execution:
+
+~~~powershell
+Get-Content $installer
+~~~
+
+The optional `-Version 1.1.1` parameter installs a specific public release.
+The optional `-SkipHash` switch is available for controlled offline or
+mirrored workflows, but checksum verification is the default and recommended
+path.
+
 ## Source checkout
 
 ~~~powershell

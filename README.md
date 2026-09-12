@@ -15,6 +15,7 @@ Everything in this repository is inspectable, local-first, and explicit about it
 [![Download latest](https://img.shields.io/badge/Download-latest-2ea44f?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/latest)
 [![Download wheel](https://img.shields.io/badge/Download-Wheel-0969da?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/download/v1.1.1/aegis_community_preview-1.1.1-py3-none-any.whl)
 [![Source ZIP](https://img.shields.io/badge/Source-ZIP-6f42c1?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v1.1.1.zip)
+[![Windows installer](https://img.shields.io/badge/Windows-One--click-2088ff?style=for-the-badge)](docs/DOWNLOADS.md#windows-one-click-installer)
 [![Documentation](https://img.shields.io/badge/Read-Docs-8250df?style=for-the-badge)](docs/USAGE_GUIDE.md)
 [![Report issue](https://img.shields.io/badge/Report-Issue-d1242f?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/issues/new/choose)
 
@@ -110,7 +111,22 @@ aegis-community preflight
 
 The release also contains a source distribution and SHA256SUMS.txt.
 
-### Option B: source checkout
+### Option B: Windows one-click installer
+
+This is the easiest route for Windows users. It finds the latest release,
+downloads the wheel, verifies SHA-256, installs it, and runs preflight:
+
+~~~powershell
+$installer = Join-Path $env:TEMP 'install-aegis-community.ps1'
+Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/SxnapXSN/aegis-community-preview/main/scripts/install-community.ps1' -OutFile $installer
+powershell -ExecutionPolicy Bypass -File $installer
+~~~
+
+The script requires Python 3.10 or newer. It does not install a service or
+send project data anywhere. Review the downloaded script before running it if
+your local policy requires inspection.
+
+### Option C: source checkout
 
 ~~~powershell
 git clone https://github.com/SxnapXSN/aegis-community-preview.git
@@ -123,7 +139,7 @@ aegis-community manifest
 The bootstrap script installs the package without runtime dependencies. It
 does not register a network service or collect credentials.
 
-### Option C: source ZIP
+### Option D: source ZIP
 
 Use the Source ZIP button when Git is not installed. Extract the archive,
 open PowerShell in the extracted folder, and run scripts/bootstrap.ps1.
