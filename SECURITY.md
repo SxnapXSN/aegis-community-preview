@@ -14,5 +14,6 @@ enables it. Until then, contact the repository owner privately through GitHub.
 
 ## Supported Version
 
-Only the latest code on the default branch is supported during the integration
-candidate period. A full Stable security claim is outside the Community scope.
+Only the latest code on the default branch and the latest public preview
+release are supported. A full Stable security claim is outside the Community
+scope.

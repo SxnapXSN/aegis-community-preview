@@ -11,7 +11,7 @@ not disclose machine paths, addresses, credentials, or private Stable data.
 - Boundary checker: passed.
 - Wheel build: passed with the Community package and its public files.
 - Editable installation: passed; the `aegis-community` command reported the
-  candidate version.
+  public preview version.
 
 ## MCP Clients
 
@@ -45,6 +45,8 @@ not disclose machine paths, addresses, credentials, or private Stable data.
 
 ## Release Decision
 
-These checks are evidence for the local candidate only. A public release still
-requires the final staged-file review and an owner decision to publish.
-Donation information remains intentionally absent.
+These checks support the Community 1.1.0 public preview. The tagged release
+workflow repeats the package build, unit suite, and public-boundary checker
+before publishing downloadable assets. This release still does not claim
+full Stable or OCR readiness. Donation information remains intentionally
+absent.

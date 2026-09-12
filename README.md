@@ -1,153 +1,239 @@
+<div align="center">
+
 # Aegis Community
 
-> A privacy-first local MCP bridge that lets an AI client understand the
-> public Aegis contract before it plans a task.
+### Local AI context, document intelligence, and MCP tools for the public Aegis surface
 
-Aegis Community is the public, high-capability surface of Aegis. It is small
-enough to inspect, safe enough to run locally, and explicit about its limits.
-It does not expose or bundle the private Stable engine.
+Turn a natural-language request into clean, bounded context that an AI client can actually use.
+Everything in this repository is inspectable, local-first, and explicit about its limits.
 
-## What Makes It Useful
+[![Preview CI](https://img.shields.io/github/actions/workflow/status/SxnapXSN/aegis-community-preview/ci.yml?branch=main&label=Preview%20CI&style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/SxnapXSN/aegis-community-preview?display_name=tag&style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/latest)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![License](https://img.shields.io/github/license/SxnapXSN/aegis-community-preview?style=for-the-badge)](LICENSE)
 
-- One local install for the public CLI and MCP bridge.
-- A machine-readable manifest that AI clients read before using tools.
-- A conservative task planner with human approval for high-risk work.
-- A universal local document-to-Markdown pipeline for text, structured data,
-  DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, RTF, PDF, and image metadata.
-- Redacted, chunked AI context packs with source hashes, freshness signals,
-  and read-back evidence.
-- A bounded folder scan mode that never leaves an unbounded background daemon.
-- A high-quality MD image-to-3D workflow through a separately installed local
-  adapter, with artifact read-back and explicit approval before generation.
-- Privacy-safe output: no machine paths, network addresses, credentials, or
-  telemetry are returned by the public contract.
+[![Download latest](https://img.shields.io/badge/Download-latest-2ea44f?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/latest)
+[![Download wheel](https://img.shields.io/badge/Download-Wheel-0969da?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/releases/download/v1.1.0/aegis_community_preview-1.1.0-py3-none-any.whl)
+[![Source ZIP](https://img.shields.io/badge/Source-ZIP-6f42c1?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v1.1.0.zip)
+[![Documentation](https://img.shields.io/badge/Read-Docs-8250df?style=for-the-badge)](docs/USAGE_GUIDE.md)
+[![Report issue](https://img.shields.io/badge/Report-Issue-d1242f?style=for-the-badge)](https://github.com/SxnapXSN/aegis-community-preview/issues/new/choose)
 
-## Quick Start
+**Current public line: Community 1.1.0 · Public Preview**
 
-Python 3.10 or newer is required. The core package uses only the Python
-standard library.
+</div>
 
-```powershell
+## The idea
+
+~~~text
+User request
+     |
+     v
+AI client (Codex, Claude, or another MCP client)
+     |
+     | discovers, plans, and calls approved tools
+     v
+Aegis Community (local MCP + CLI)
+     |
+     | converts, redacts, chunks, hashes, and verifies
+     v
+Structured Markdown and context returned to the AI
+~~~
+
+Community is a supporting tool layer, not a second AI model. The user speaks
+to the AI normally; the AI uses Community when it needs to understand local
+documents, prepare a context pack, or run an explicitly approved local
+workflow.
+
+## What you get
+
+| Area | Included in Community 1.1.0 |
+| --- | --- |
+| AI connection | Discovery-first local stdio MCP bridge for Codex, Claude, and compatible clients |
+| Documents | Text, source, CSV/TSV, JSON, DOCX, PPTX, XLSX, ODT, ODP, ODS, EPUB, RTF, PDF, and image metadata |
+| AI context | Markdown output, summaries, bounded chunks, source hashes, freshness signals, and manifests |
+| Safety | Plan-first behavior, explicit approval for writes, default redaction, and no arbitrary task execution |
+| Reliability | Atomic writes, cache reuse, partial-result reporting, output-loop protection, and read-back checks |
+| Folder workflows | Finite scans and bounded watch iterations without a hidden background daemon |
+| MD adapter | Approved local image-to-3D adapter boundary with GLB/OBJ verification; model code and weights stay external |
+| Privacy | No telemetry, private Stable source, credentials, machine paths, network addresses, or private runtime data in the public contract |
+
+## Download and install
+
+### Option A: latest release wheel
+
+Download the wheel from the Download wheel button above, then install it
+locally:
+
+~~~powershell
+python -m pip install --no-deps .\aegis_community_preview-1.1.0-py3-none-any.whl
+aegis-community preflight
+~~~
+
+The release also contains a source distribution and SHA256SUMS.txt.
+
+### Option B: source checkout
+
+~~~powershell
+git clone https://github.com/SxnapXSN/aegis-community-preview.git
+Set-Location aegis-community-preview
 powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
 aegis-community preflight
 aegis-community manifest
-aegis-community documents
-```
+~~~
 
-When Codex or Claude CLI is installed, connect the available clients with a
-single opt-in command. Existing client settings are backed up first:
+The bootstrap script installs the package without runtime dependencies. It
+does not register a network service or collect credentials.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1 -ConnectClients
-```
+### Option C: source ZIP
 
-Run the included safe task plan:
+Use the Source ZIP button when Git is not installed. Extract the archive,
+open PowerShell in the extracted folder, and run scripts/bootstrap.ps1.
 
-```powershell
-aegis-community run --input examples/sample_task.json --format pretty
-```
+See the full [download guide](docs/DOWNLOADS.md) for release assets,
+checksums, source installs, and troubleshooting.
 
-Convert a local document set into AI-readable Markdown:
+## Connect an AI client
 
-```powershell
-aegis-community documents-plan --path input/report.docx --path input/data.xlsx
-aegis-community documents-convert --folder input --output-dir output/markdown --approve
-aegis-community context-pack --folder input --output-dir output/context --approve
-```
+Community uses local stdio MCP. Import
+[examples/mcp-client-config.json](examples/mcp-client-config.json) when the
+client supports MCP configuration import, or register the same command in the
+client's MCP settings:
 
-The converter writes Markdown, compact summaries, manifests, and bounded
-context chunks. Redaction is enabled by default; scanned images and scanned
-PDF pages can use an explicitly configured local OCR adapter. See
-[Document Integration](docs/DOCUMENT_INTEGRATION.md).
+~~~json
+{
+  "mcpServers": {
+    "aegis-community": {
+      "command": "python",
+      "args": ["-m", "aegis_community.mcp_server"]
+    }
+  }
+}
+~~~
 
-Run the public MD capability check and plan:
+After connection, the AI client should discover the public contract in this
+order:
 
-```powershell
+1. aegis_manifest
+2. aegis_capabilities
+3. aegis_system_map
+4. aegis_preflight
+
+Only then should it plan a task, document conversion, context pack, or MD
+operation. The bridge writes no status text to stdout, so JSON-RPC remains
+clean for the client.
+
+## Convert documents for AI
+
+Plan first, then approve the bounded local write:
+
+~~~powershell
+aegis-community documents --format json
+aegis-community documents-plan --path input\brief.pdf --path input\table.xlsx
+aegis-community documents-convert --path input\brief.pdf --path input\table.xlsx --output-dir output\markdown --approve
+aegis-community context-pack --folder input --output-dir output\context --approve
+~~~
+
+The result contains Markdown, compact summaries, manifests, and bounded
+context chunks. Redaction is enabled by default. Scanned files can use an
+explicitly configured local OCR adapter; OCR is optional and is never claimed
+as ready when no adapter is present.
+
+Read [Document Integration](docs/DOCUMENT_INTEGRATION.md) for supported
+formats, limits, cache behavior, and output contracts.
+
+## Run the MD adapter workflow
+
+The public package defines the contract without bundling model code, model
+weights, caches, or upstream license material:
+
+~~~powershell
 aegis-community md
 aegis-community md-plan --input examples/md_request.json --format pretty
-```
-
-To generate from a local image, choose the destination yourself and approve
-the run explicitly:
-
-```powershell
 aegis-community md-run --input examples/md_request.json --image $image --output $output --approve
-```
+~~~
 
-`$image` and `$output` are local PowerShell variables chosen by the user. The
-command reports a logical artifact name, byte count, hash, and read-back state;
-it does not print the machine paths.
+Read [MD Integration](docs/MD_INTEGRATION.md) before connecting a local
+backend.
 
-## Connect An MCP Client
+## Use the CLI directly
 
-The bridge uses local stdio and makes no network request. Use the portable
-example in `examples/mcp-client-config.json` where the client supports MCP
-configuration import, or register the same module command in the client's
-MCP settings.
+The CLI is available for advanced users and automation. The intended primary
+experience remains User -> AI -> Community through MCP.
 
-After connection, the client should call these tools in order:
+~~~powershell
+aegis-community --help
+aegis-community capabilities --format pretty
+aegis-community system-map --format pretty
+aegis-community run --input examples/sample_task.json --format pretty
+aegis-community watch --folder input --output-dir output\markdown --iterations 3 --interval 10 --approve
+~~~
 
-1. `aegis_manifest`
-2. `aegis_capabilities`
-3. `aegis_system_map`
-4. `aegis_preflight`
+## Why it is different from manual file sharing
 
-Only then should it call `aegis_plan_task`, `aegis_document_plan`, or
-`aegis_md_plan`.
+Without Community, a user must find files, convert formats, copy content into
+an AI chat, manage context limits, and remember what was included. With
+Community, the AI can request a plan and receive a bounded, redacted,
+hash-traceable context pack with read-back evidence.
 
-## Public Surface
+Community does not improve the underlying model by itself. It improves the
+quality, consistency, and traceability of the information the model receives.
 
-| Capability | Community behavior |
-| --- | --- |
-| Architecture context | Public system map and capability descriptions |
-| Task planning | Local validation and plan-only execution briefs |
-| Safety | High-risk tasks require human review |
-| Documents | Local multi-format conversion into Markdown artifacts |
-| Context | Redacted summaries, chunks, hashes, and read-back checks |
-| MD | High-quality approved local image-to-3D workflow with artifact read-back |
-| Evidence | Per-run checks and approval state |
-| Transport | Local stdio MCP, no public listener |
+## Public boundary
 
-The Community surface does not execute arbitrary actions, expose private
-routing, or include private models and optimizers. Document conversion and
-context packaging are bounded local writes that require explicit approval.
+This repository is the free public Community surface. It intentionally does
+not include the private Aegis Stable engine, private routing, private models,
+hidden connectors, customer data, telemetry, or unbounded autonomous actions.
+The public contract is designed to be useful without revealing private IP or
+runtime details.
 
-## MD Boundary
-
-MD is intentionally an adapter boundary. The Community package does not copy
-model code, model weights, cache files, or upstream license material. A user
-may connect a separately installed local MD backend through the documented
-adapter contract. The MCP surface only creates a plan; the CLI requires an
-explicit approval flag before starting a local generation and verifies the
-result before delivery. Adapter commands and local installation details are
-never printed by the manifest, preflight, or MCP responses.
-
-Read [MD integration](docs/MD_INTEGRATION.md) before connecting a backend.
-
-## Privacy Boundary
-
-The release checker rejects common credential files, private runtime paths,
-machine paths, local host names, and IP addresses in public text. The runtime
-also redacts those values from task briefs. This is a release safeguard, not a
-replacement for human review.
+For the exact allow-list and exclusions, read
+[COMMUNITY_SCOPE.md](COMMUNITY_SCOPE.md) and [SECURITY.md](SECURITY.md).
 
 ## Verification
 
-```powershell
+The current release evidence includes 26 passing tests, Python compilation,
+wheel build, boundary verification, MCP contract checks, document parsing
+fixtures, context-pack read-back, and real CLI smoke conversion.
+
+Run the local gates before sharing a modified copy:
+
+~~~powershell
 python -m unittest discover -s tests -v
 python scripts/verify_preview_boundary.py .
-```
+git diff --check
+~~~
 
-## Release Status
+Read the [release evidence](docs/RELEASE_EVIDENCE.md) and
+[release checklist](docs/RELEASE_CHECKLIST.md) for the publication contract.
 
-The current line is `Community 1.1.0`, a local release candidate. It includes
-the universal document pipeline and AI context-pack workflow. It is not
-published yet: a final staged-file review and owner approval are still required
-before any push. No donation or
-monetization information is part of this release.
+## Project map
+
+| Path | Purpose |
+| --- | --- |
+| aegis_community/ | Public CLI, MCP bridge, manifest, document pipeline, context pack, and adapters |
+| docs/ | Architecture, usage, integration, release, and download documentation |
+| examples/ | Portable task, document, context, MD, and MCP configuration examples |
+| scripts/ | Windows bootstrap, client connection, and boundary verification helpers |
+| tests/ | Contract, document, privacy, cache, MCP, and task tests |
+
+## Status and roadmap
+
+Community 1.1.0 is a public preview release. The public workflow is ready
+for local use and contribution. OCR adapters, broader legacy Office support,
+additional diagnostics, and future public-safe workflows remain separate
+follow-up work.
+
+Donation and monetization information is intentionally not included yet.
+
+## Contributing and support
+
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a change.
+- Use [Issues](https://github.com/SxnapXSN/aegis-community-preview/issues) for
+  reproducible bugs and focused feature requests.
+- Use [SECURITY.md](SECURITY.md) for security-sensitive reports.
 
 ## License
 
-The Community code is licensed under Apache-2.0. Any separately installed MD
-backend remains subject to its own upstream license and is not relicensed by
-this repository.
+The Community code is licensed under [Apache-2.0](LICENSE). Any separately
+installed MD backend remains subject to its own upstream license and is not
+relicensed by this repository. See [NOTICE](NOTICE) for the project boundary.

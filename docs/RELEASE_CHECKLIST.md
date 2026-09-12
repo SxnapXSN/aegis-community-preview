@@ -24,6 +24,8 @@
       or private runtime artifact is staged.
 - [x] No private Stable source or policy is included.
 - [x] No donation or payment account is included before its later approval.
+- [x] README contains working source, release, documentation, issue, and wheel
+      links.
 
 ## Verification
 
@@ -39,6 +41,13 @@ aegis-community documents --format json
 aegis-community documents-plan --input examples/document_request.json
 ```
 
-The maintainer must review the final staged file list before publication. A
-passing unit suite alone is not an end-to-end release claim; the companion
+The maintainer must review the final staged file list before each publication.
+A passing unit suite alone is not an end-to-end release claim; the companion
 evidence record documents the real MCP client and MD backend checks.
+
+## Published Release Assets
+
+Tags matching `v*.*.*` run `.github/workflows/release.yml`. The workflow
+checks that the tag matches `pyproject.toml`, rebuilds the wheel and source
+distribution, writes `SHA256SUMS.txt`, reruns the tests and boundary checker,
+and publishes the assets to a GitHub Release.

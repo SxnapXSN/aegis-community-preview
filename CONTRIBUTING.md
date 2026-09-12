@@ -12,7 +12,8 @@ Before opening a pull request:
    tested first.
 4. Run `python -m unittest discover -s tests -v`.
 5. Run `python scripts/verify_preview_boundary.py .`.
-6. Review the staged file list manually before publication.
+6. Review the staged file list manually before opening a release or pull
+   request.
 
 Contributions are submitted under the Apache-2.0 license. Third-party MD
 backends retain their own licenses.

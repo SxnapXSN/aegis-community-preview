@@ -1,4 +1,4 @@
-"""Fail when a Community Preview candidate contains private or secret material."""
+"""Fail when a Community Preview contains private or secret material."""
 
 from __future__ import annotations
 

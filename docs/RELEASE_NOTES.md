@@ -1,6 +1,6 @@
 # Release Notes
 
-## 1.1.0 Universal Document Release Candidate
+## 1.1.0 Universal Document Public Preview
 
 - Added a dependency-light document-to-Markdown pipeline for text, source,
   CSV/TSV, JSON, DOCX, PPTX, XLSX, PDF, and image inputs.
@@ -13,6 +13,8 @@
 - Added bounded folder scanning with output-loop protection.
 - Added focused coverage for Office XML parsing, PDF fallback, redaction,
   caching, context budgets, and folder discovery.
+- Published the source, wheel, source distribution, and SHA-256 checksums as
+  GitHub Release assets from the tagged source.
 
 ## 1.0.0 Local Release Candidate
 

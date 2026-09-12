@@ -1,1 +1,1 @@
-"""Release-safety utilities for the Community Preview candidate."""
+"""Release-safety utilities for the public Community Preview."""
