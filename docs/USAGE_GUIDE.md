@@ -1,76 +1,168 @@
 # Usage Guide
 
-## 1. Get The Preview
+## 1. Install
 
-Choose one of these local installation methods.
-
-### Download A Source Bundle
-
-1. Download the [v0.1.1 source ZIP](https://github.com/SxnapXSN/aegis-community-preview/archive/refs/tags/v0.1.1.zip).
-2. Extract it to a local folder.
-3. Open PowerShell in the extracted folder.
-
-### Clone With Git
+Install Python 3.10 or newer, then run the bootstrap script from the project
+directory:
 
 ```powershell
-git clone https://github.com/SxnapXSN/aegis-community-preview.git
-cd aegis-community-preview
+powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1
 ```
 
-## 2. Install
+The script installs the package without adding runtime dependencies. It does
+not register a network service and does not collect credentials.
 
-Python 3.10 or newer is required. The preview has no runtime dependencies
-outside the Python standard library.
+To connect detected Codex and Claude CLI installations in the same step, add
+the opt-in switch:
 
 ```powershell
-python -m pip install -e .
+powershell -ExecutionPolicy Bypass -File scripts/bootstrap.ps1 -ConnectClients
 ```
 
-## 3. Run The Included Example
+Existing client settings are backed up before a new Community entry is added.
+The connection script does not print the backup location or client command
+output.
+
+## 2. Check Readiness
 
 ```powershell
-python -m aegis_community.cli --input examples/sample_task.json
+aegis-community preflight
 ```
 
-The command prints a JSON execution brief. It does not run the listed actions.
+`ready` means that the local public contract can run. The MD check may remain
+`optional` until a local adapter is configured. `e2e_ready` stays false in
+preflight because preflight never runs a model; the separate release evidence
+records the real client and backend checks.
 
-## 4. Create A Task File
+## 3. Read The Contract
 
-Create a JSON file such as `my-task.json`:
+```powershell
+aegis-community manifest
+aegis-community capabilities
+aegis-community system-map
+```
+
+Use `--format json` when another program or AI client will consume the result:
+
+```powershell
+aegis-community manifest --format json
+```
+
+The public output intentionally omits local paths, addresses, credentials,
+and private engine details.
+
+## 4. Plan A Task
+
+```powershell
+aegis-community run --input examples/sample_task.json --format pretty
+```
+
+Task fields are:
+
+- `task_id`: a stable local identifier.
+- `title`: a short human-readable name.
+- `objective`: what the task is meant to accomplish.
+- `risk_level`: `low`, `medium`, or `high`.
+- `allowed_actions`: labels for the proposed plan only.
+
+The Community planner never executes the labels in `allowed_actions`. A high
+risk task returns no enabled actions and always requires human review.
+
+## 5. Connect MCP
+
+The portable example is in `examples/mcp-client-config.json`:
 
 ```json
 {
-  "task_id": "docs-001",
-  "title": "Draft a guide",
-  "objective": "Prepare a local documentation outline.",
-  "risk_level": "low",
-  "allowed_actions": ["draft_outline", "request_human_review"]
+  "mcpServers": {
+    "aegis-community": {
+      "command": "python",
+      "args": ["-m", "aegis_community.mcp_server"]
+    }
+  }
 }
 ```
 
-Then run it:
+Import it where the client supports MCP configuration import. Otherwise add
+the same command to the client's MCP settings. The bridge speaks newline-
+delimited JSON-RPC over stdio and writes no status text to stdout.
+
+The AI client must call `aegis_manifest`, `aegis_capabilities`,
+`aegis_system_map`, and `aegis_preflight` before planning work.
+
+## 6. Use The MD Contract
+
+Check the public MD surface:
 
 ```powershell
-python -m aegis_community.cli --input my-task.json
+aegis-community md
+aegis-community md-plan --input examples/md_request.json --format pretty
 ```
 
-Risk levels are `low`, `medium`, and `high`. A `high` task always returns
-`requires_human_review` and exposes no enabled actions.
+The MCP surface accepts an image-to-3D request and returns a plan. It does not
+run the model from MCP. For a local, approved generation, provide an image and
+destination to the CLI:
 
-## 5. Verify A Local Copy
+```powershell
+aegis-community md-run --input examples/md_request.json --image $image --output $output --approve
+```
 
-Run both commands before contributing or sharing a modified copy:
+The runner does not bundle model weights, copy upstream code, or print the
+configured backend command. See [MD Integration](MD_INTEGRATION.md) for the
+adapter protocol and artifact verification rules.
+
+## 7. Verify A Copy
+
+Run both checks before sharing a modified copy:
 
 ```powershell
 python -m unittest discover -s tests -v
 python scripts/verify_preview_boundary.py .
 ```
 
-The boundary check rejects files outside the public allow-list and common
-credential file types. It is a release aid, not a replacement for human review.
+The boundary checker is deliberately strict about paths, addresses,
+credentials, and private runtime material. It is a release aid and does not
+replace a human staged-file review.
 
-## Important Limits
+## 8. Convert Documents For AI
 
-This preview is not the private Aegis Stable engine. It does not include model
-providers, networking, autonomous execution, persistent storage, telemetry,
-or credentials. Do not use it for security-critical or production decisions.
+Check the built-in document capability:
+
+```powershell
+aegis-community documents --format json
+```
+
+Create a plan, then approve the bounded local write:
+
+```powershell
+aegis-community documents-plan --path input/brief.pdf --path input/table.xlsx
+aegis-community documents-convert --path input/brief.pdf --path input/table.xlsx --output-dir output/markdown --approve
+```
+
+Supported modern Office files are parsed from their Open XML structure, CSV
+and JSON retain their structure, and PDFs use a local text reader with a
+dependency-free fallback. Scanned files need the optional local OCR adapter.
+The output is a Markdown file, a compact summary, and a manifest containing
+the source hash and conversion warnings.
+
+## 9. Give An AI A Context Pack
+
+```powershell
+aegis-community context-plan --folder input --output-dir output/context
+aegis-community context-pack --folder input --output-dir output/context --approve
+```
+
+The pack contains `context.md`, a machine-readable manifest, and bounded
+chunks. Redaction is enabled by default so common credentials, local paths,
+addresses, and URLs are not carried into the AI context. Use `--no-redact`
+only for a trusted local workflow.
+
+## 10. Bounded Folder Processing
+
+```powershell
+aegis-community watch --folder input --output-dir output/markdown --approve
+aegis-community watch --folder input --output-dir output/markdown --iterations 3 --interval 10 --approve
+```
+
+The first command performs one scan. The second performs three finite scans.
+There is no unbounded daemon or hidden startup process.

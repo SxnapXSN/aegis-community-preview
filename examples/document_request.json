@@ -1,0 +1,10 @@
+{
+  "paths": [
+    "input/report.docx",
+    "input/data.xlsx",
+    "input/notes.md"
+  ],
+  "output_dir": "output/markdown",
+  "ocr": false,
+  "redact": true
+}

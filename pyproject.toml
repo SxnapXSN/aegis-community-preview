@@ -4,14 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aegis-community-preview"
-version = "0.1.1"
-description = "Local-only task contract preview for Aegis Stable"
+version = "1.1.0"
+description = "Privacy-safe local MCP bridge, document-to-Markdown pipeline, and AI context pack for Aegis Community"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "SxnapXSN" }]
 dependencies = []
 
 [project.scripts]
+aegis-community = "aegis_community.cli:main"
 aegis-preview = "aegis_community.cli:main"
 
 [tool.setuptools.packages.find]

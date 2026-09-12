@@ -1,0 +1,11 @@
+{
+  "paths": [
+    "input/report.pdf",
+    "input/notes.md"
+  ],
+  "output_dir": "output/context",
+  "ocr": false,
+  "redact": true,
+  "max_chars": 200000,
+  "chunk_chars": 30000
+}

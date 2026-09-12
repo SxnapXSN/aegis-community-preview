@@ -8,7 +8,14 @@ from pathlib import Path
 from typing import Iterable
 
 
-IGNORED_DIRECTORIES = {".git", ".venv", "__pycache__", ".pytest_cache"}
+IGNORED_DIRECTORIES = {
+    ".git",
+    ".venv",
+    "__pycache__",
+    ".pytest_cache",
+    "build",
+    "dist",
+}
 ALLOWED_TOP_LEVEL_DIRECTORIES = {
     ".github",
     "aegis_community",
@@ -40,8 +47,37 @@ FORBIDDEN_PATH_PARTS = {
 }
 FORBIDDEN_SUFFIXES = {".key", ".pem", ".p12", ".pfx"}
 SECRET_PATTERN = re.compile(
-    r"(?i)(?:api[_-]?key|secret|access[_-]?token)\\s*[:=]\\s*[\"'][^\"'\\s]{8,}"
+    r"(?i)(?:api[_-]?key|secret|access[_-]?token)\s*[:=]\s*[\"'][^\"'\s]{8,}"
 )
+WINDOWS_PATH_PATTERN = re.compile(
+    r"(?i)(?:[a-z]:[\\/](?![\\/])|\\\\[^\\/\s]+[\\/]+)[^\s<>\"']*"
+)
+UNIX_PATH_PATTERN = re.compile(
+    r"(?i)(?<![\w])/(?:home|users|mnt|tmp|var|opt|workspace)/[^\s<>\"']*"
+)
+IPV4_PATTERN = re.compile(
+    r"(?<![\w.])(?:25[0-5]|2[0-4]\d|1?\d?\d)"
+    r"(?:\.(?:25[0-5]|2[0-4]\d|1?\d?\d)){3}(?::\d{1,5})?(?![\w.])"
+)
+LOOPBACK_HOST_PATTERN = re.compile(
+    r"(?i)(?<![\w.-])localhost(?::\d{1,5})?(?![\w.-])"
+)
+TEXT_SUFFIXES = {
+    ".bat",
+    ".cmd",
+    ".json",
+    ".md",
+    ".py",
+    ".ps1",
+    ".txt",
+    ".toml",
+    ".yml",
+    ".yaml",
+}
+CONTENT_DISCLOSURE_EXEMPTIONS = {
+    "aegis_community/public_text.py",
+    "scripts/verify_preview_boundary.py",
+}
 
 
 def _files(root: Path) -> Iterable[Path]:
@@ -78,7 +114,7 @@ def find_violations(root: Path) -> list[str]:
         if path.suffix.lower() in FORBIDDEN_SUFFIXES:
             violations.append(f"credential file suffix: {relative}")
 
-        if path.suffix.lower() not in {".py", ".md", ".txt", ".json", ".toml", ".yml", ".yaml"}:
+        if path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         try:
             content = path.read_text(encoding="utf-8")
@@ -87,6 +123,13 @@ def find_violations(root: Path) -> list[str]:
             continue
         if SECRET_PATTERN.search(content):
             violations.append(f"possible embedded credential: {relative}")
+        if relative.as_posix() not in CONTENT_DISCLOSURE_EXEMPTIONS:
+            if WINDOWS_PATH_PATTERN.search(content) or UNIX_PATH_PATTERN.search(content):
+                violations.append(f"machine path in public text: {relative}")
+            if IPV4_PATTERN.search(content):
+                violations.append(f"IP address in public text: {relative}")
+            if LOOPBACK_HOST_PATTERN.search(content):
+                violations.append(f"local host in public text: {relative}")
     return violations
 
 
@@ -96,7 +139,7 @@ def main() -> int:
     args = parser.parse_args()
     root = args.directory.resolve()
     if not root.is_dir():
-        parser.error(f"not a directory: {root}")
+        parser.error("the selected directory is not available")
 
     violations = find_violations(root)
     if violations:
@@ -105,7 +148,7 @@ def main() -> int:
             print(f"- {violation}")
         return 1
 
-    print(f"Preview boundary check passed: {root}")
+    print("Preview boundary check passed")
     return 0
 
 

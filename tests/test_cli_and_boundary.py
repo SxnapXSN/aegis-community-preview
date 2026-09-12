@@ -33,6 +33,33 @@ class CliAndBoundaryTests(unittest.TestCase):
         self.assertEqual("cli-1", brief["task_id"])
         self.assertEqual("ready_for_review", brief["status"])
 
+    def test_cli_runs_approved_document_conversion_and_reports_read_back(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            source = root / "brief.txt"
+            output_dir = root / "markdown"
+            source.write_text("A local brief.", encoding="utf-8")
+            output = io.StringIO()
+            with redirect_stdout(output):
+                exit_code = main(
+                    [
+                        "documents-convert",
+                        "--path",
+                        str(source),
+                        "--output-dir",
+                        str(output_dir),
+                        "--approve",
+                        "--format",
+                        "json",
+                    ]
+                )
+
+        payload = json.loads(output.getvalue())
+        self.assertEqual(0, exit_code)
+        self.assertEqual("completed", payload["status"])
+        self.assertTrue(payload["documents"][0]["read_back"])
+        self.assertNotIn(str(root), output.getvalue())
+
     def test_boundary_checker_flags_environment_files(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

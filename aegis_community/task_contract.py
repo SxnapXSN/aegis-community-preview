@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+from .public_text import redact_public_text
+
 
 class TaskValidationError(ValueError):
     """Raised when a task envelope does not meet the public contract."""
@@ -64,13 +66,31 @@ def build_execution_brief(task: TaskEnvelope) -> dict[str, Any]:
 
     requires_human_review = task.risk_level == "high"
     return {
-        "task_id": task.task_id,
-        "title": task.title,
-        "objective": task.objective,
+        "contract_version": "1.0",
+        "task_id": redact_public_text(task.task_id),
+        "title": redact_public_text(task.title),
+        "objective": redact_public_text(task.objective),
         "risk_level": task.risk_level,
         "status": "requires_human_review" if requires_human_review else "ready_for_review",
         "requires_human_review": requires_human_review,
-        "enabled_actions": [] if requires_human_review else list(task.allowed_actions),
+        "enabled_actions": (
+            []
+            if requires_human_review
+            else [redact_public_text(action) for action in task.allowed_actions]
+        ),
+        "execution": "plan_only",
+        "checks": [
+            {"id": "task_contract", "status": "passed"},
+            {
+                "id": "human_approval",
+                "status": "required" if requires_human_review else "awaiting_review",
+            },
+        ],
+        "privacy": {
+            "paths_returned": False,
+            "addresses_returned": False,
+            "credentials_returned": False,
+        },
         "notice": (
             "This preview produces a plan only; it never executes actions."
             if not requires_human_review

@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "aegis-community": {
+      "command": "python",
+      "args": [
+        "-m",
+        "aegis_community.mcp_server"
+      ]
+    }
+  }
+}
